@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frinlet TV | LIVE | </title>
+    <link rel="stylesheet" type="text/css" href="http://frinlet.com/style.css"></link>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link href="http://vjs.zencdn.net/5.4.6/video-js.css" rel="stylesheet">
+    <!-- If you'd like to support IE8 -->
+    <script src="http://vjs.zencdn.net/ie8/1.1.1/videojs-ie8.min.js"></script>
+    <!-- streamURLs.push({ file:"rtmp://usmedia2.livecoding.tv:1935/livecodingtv/frinlet?t=anonymous:frinlet:76.184.197.166:1aHNEM:L0wkmbQoB2-VrFvvPIBzzDXtAMk"});  streamURLs.push({ file:"http://usmedia2.livecoding.tv:8080/hls/frinlet/index.m3u8?t=anonymous:frinlet:76.184.197.166:1aHNEM:L0wkmbQoB2-VrFvvPIBzzDXtAMk"}); -->
+    <style>
+        h1 {
+            font-family: sans-serif;
+            color: #fff;
+        }
+        #column_container {
+            width: 959px;
+            margin: 30px auto;
+        }
+        #column1 {
+            width: 640px;
+            float: left;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Frinlet TV | LIVE | </h1>
+    <div id="wrapper">
+        <div id="column_container">
+            <div id="column1">
+                <video autoplay id="frinletStream" class="video-js" controls preload="auto" width="640" height="500" >
+                <source id="sourceUrl" src="" type='rtmp/mp4'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+                </video>
+            </div>
+            <div id="column2">
+                <iframe src="http://www.twitch.tv/frinlet/chat?popout=" frameborder="0" height="500"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
+    <script src="http://vjs.zencdn.net/5.4.6/video.js"></script>
+    <script>
+        (function() {
+            $.getJSON("https://api.twitch.tv/kraken/channels/frinlet", function (data) {
+                $("h1").append(data.status);
+            });
+
+            $.ajax({
+                url: '//freegeoip.net/json/',
+                type: 'POST',
+                dataType: 'jsonp',
+                success: function(location) {
+                    $("#sourceUrl").attr("src", "rtmp://usmedia2.livecoding.tv:1935/livecodingtv/frinlet?t=anonymous:frinlet:" + location.ip + ":1aHNEM:L0wkmbQoB2-VrFvvPIBzzDXtAMk");
+
+                    var player = videojs('frinletStream', { /* Options */ }, function() {
+                        console.log('Good to go!');
+
+                        this.play(); // if you don't trust autoplay for some reason
+
+                        // How about an event listener?
+                        this.on('ended', function() {
+                            console.log('awww...over so soon?');
+                        });
+                    });
+                }
+            });
+
+
+
+        }());
+
+    </script>
+</body>
+</html>
